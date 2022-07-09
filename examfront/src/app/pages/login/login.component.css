@@ -1,0 +1,12 @@
+.logo-src{
+	margin-top:20px;
+	border: 1px solid #ddd;
+  	border-radius: 20%; 
+  	padding: 5px; 
+  	width: 100px; 
+  	height:100px;
+}
+.full-width{
+	
+	width:100%;
+}
