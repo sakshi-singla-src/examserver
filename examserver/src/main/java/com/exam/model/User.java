@@ -177,8 +177,10 @@ public class User implements UserDetails{
 		this.userRoles.forEach(userRole -> {
 			set.add(new Authority(userRole.getRole().getRoleName()));
 		});
+		for(Authority a :set)
+			System.out.println(a.getAuthority());
 		
-		return null;
+		return set;
 	}
 
 

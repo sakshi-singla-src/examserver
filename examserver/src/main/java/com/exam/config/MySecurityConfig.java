@@ -1,6 +1,8 @@
 package com.exam.config;
 
+import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,12 +18,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import com.exam.service.impl.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class MySecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
@@ -39,14 +42,14 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter{
 		return super.authenticationManagerBean();
 	}
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		
-		http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/generate-token","/user").permitAll()
+		http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/generate-token","/user/").permitAll()
 		.antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -56,6 +59,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter{
 	//unauthorized handler---rejects unauthorized reuquest
 		//filter - checkts token
 	}
+	
+
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

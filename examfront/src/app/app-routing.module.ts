@@ -1,8 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SignupComponent } from './pages/signup/signup.component';
+import { UserDashboardComponent } from './pages/user/user-dashboard/user-dashboard.component';
+import { AdminGuard } from 'src/app/services/admin.guard';
+import { NormalGuard } from 'src/app/services/normal.guard';
+import { __assign } from 'tslib';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { WelcomeComponent } from './pages/admin/welcome/welcome.component';
+
 
 const routes: Routes = [ 
 	{
@@ -19,6 +27,31 @@ const routes: Routes = [
 		path:'login',
 		component:LoginComponent,
 		pathMatch:'full',
+	},
+	{
+		path:'admin',
+		component:DashboardComponent,
+		canActivate: [AdminGuard],
+		
+		children:[
+			{
+				path:'',
+				component:WelcomeComponent,
+				
+			},
+			{
+				path:'profile',
+				component:ProfileComponent,
+				
+			},
+			
+		],
+	},
+	{
+		path:'user-dashboard',
+		component:UserDashboardComponent,
+		pathMatch: 'full',
+		canActivate: [NormalGuard],
 	}
 	
 ];

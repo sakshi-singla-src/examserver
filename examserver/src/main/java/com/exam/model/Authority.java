@@ -19,6 +19,7 @@ public class Authority implements GrantedAuthority{
 
 	public Authority(String roleName) {
 		// TODO Auto-generated constructor stub
+		this.authority=roleName;
 	}
 
 
